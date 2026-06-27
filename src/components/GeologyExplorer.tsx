@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Layers, Landmark, DollarSign, Eye, Sparkles } from 'lucide-react';
+import { Layers, Landmark, Eye, Sparkles } from 'lucide-react';
 
 interface GrowthLayer {
   id: string;
@@ -159,12 +159,12 @@ export const GeologyExplorer: React.FC<GeologyExplorerProps> = ({ theme }) => {
             <div className="grid grid-cols-2 sm:flex gap-4">
               <div className={`border rounded-xl px-4 py-2 ${isDark ? 'bg-zinc-900/80 border-zinc-800' : 'bg-white border-slate-200'}`}>
                 <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider block">Monthly Budget</span>
-                <span className="text-base font-bold text-[#e8702a]">${budgetVal},000 / mo</span>
+                <span className="text-base font-bold text-[#e8702a]">₹{budgetVal},000 / mo</span>
               </div>
               <div className={`border rounded-xl px-4 py-2 ${isDark ? 'bg-zinc-900/80 border-zinc-800' : 'bg-white border-slate-200'}`}>
                 <span className="text-[10px] text-zinc-500 uppercase font-bold tracking-wider block">Target Tier</span>
                 <span className={`text-base font-bold flex items-center gap-1.5 ${isDark ? 'text-white' : 'text-zinc-900'}`}>
-                  <DollarSign className="w-4 h-4 text-orange-400" />
+                  <span className="text-orange-400 font-bold select-none">₹</span>
                   {simInfo.epoch}
                 </span>
               </div>
