@@ -6,6 +6,7 @@ import { AgencyApproach } from './components/AgencyApproach';
 import { MarketingQuiz } from './components/MarketingQuiz';
 import { GeologyExplorer } from './components/GeologyExplorer';
 import { ROICalculator } from './components/ROICalculator';
+import { BlogSection } from './components/BlogSection';
 import { PlansSection } from './components/PlansSection';
 import { StrategyCall } from './components/StrategyCall';
 import { Footer } from './components/Footer';
@@ -63,7 +64,7 @@ function App() {
 
   // Track active section on scroll
   useEffect(() => {
-    const sections = ['services', 'methodology', 'strata', 'plans', 'contact'];
+    const sections = ['services', 'methodology', 'strata', 'insights', 'plans', 'contact'];
     
     const handleScroll = () => {
       if (window.scrollY < 200) {
@@ -133,6 +134,9 @@ function App() {
 
       {/* Interactive ROI Calculator */}
       <ROICalculator theme={theme} />
+
+      {/* Blog & Marketing Insights Section (Mapped to 'insights') */}
+      <BlogSection theme={theme} onCtaClick={handleOpenBooking} />
 
       {/* Investment Plans & Packages (Mapped to 'plans') */}
       <PlansSection theme={theme} />
