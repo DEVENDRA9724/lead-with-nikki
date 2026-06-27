@@ -40,10 +40,10 @@ export const MarketingQuiz: React.FC<MarketingQuizProps> = ({ theme, onSubmitQui
       id: 2,
       text: 'What is your estimated monthly marketing ad budget?',
       options: [
-        { label: 'Less than $2,000 / mo', value: 'low', desc: 'Focusing on high-yield bootstrapping, local SEO, and conversion optimization.' },
-        { label: '$2,000 - $10,000 / mo', value: 'mid', desc: 'Ready to scale paid performance ads and targeted lead capture systems.' },
-        { label: '$10,000 - $30,000 / mo', value: 'high', desc: 'Expanding national presence, multichannels, and custom web assets.' },
-        { label: 'Above $30,000 / mo', value: 'enterprise', desc: 'Seeking category dominance, enterprise software integrations, and content engines.' },
+        { label: 'Less than ₹50,000 / mo', value: 'low', desc: 'Focusing on high-yield bootstrapping, local SEO, and conversion optimization.' },
+        { label: '₹50,000 - ₹2,00,000 / mo', value: 'mid', desc: 'Ready to scale paid performance ads and targeted lead capture systems.' },
+        { label: '₹2,00,000 - ₹5,00,000 / mo', value: 'high', desc: 'Expanding national presence, multichannels, and custom web assets.' },
+        { label: 'Above ₹5,00,000 / mo', value: 'enterprise', desc: 'Seeking category dominance, enterprise software integrations, and content engines.' },
       ],
     },
     {

@@ -30,7 +30,7 @@ export const GeologyExplorer: React.FC<GeologyExplorerProps> = ({ theme }) => {
       id: 'seo',
       name: 'Organic SEO Bedrock',
       age: '6 - 12 Month Maturity',
-      depth: '$1,500 - $4,000/mo',
+      depth: '₹35,000 - ₹75,000/mo',
       composition: 'Keyword architectures, technical index crawling, backlink networks',
       description: 'Built through structured content generation and technical SEO. Like deep limestone bedrock, it takes months to deposit but forms a permanent organic foundation that stands strong for years without ad-spend dependencies.',
       fossil: 'High-Authority Backlinks & Keyword Ranks',
@@ -45,7 +45,7 @@ export const GeologyExplorer: React.FC<GeologyExplorerProps> = ({ theme }) => {
       id: 'ads',
       name: 'Paid Performance Ads',
       age: 'Instant Visibility',
-      depth: '$3,000 - $20,000+/mo',
+      depth: '₹50,000 - ₹3,00,000+/mo',
       composition: 'Google Search Ads, Meta Retargeting, LinkedIn ABM funnels',
       description: 'Erupts search traffic and conversions immediately. Formed by targeted bid algorithms and copy testing, performance ads act like rapid volcanic basalt, generating high heat, instant views, and quick leads.',
       fossil: 'Google search slots & Meta ad copy',
@@ -60,7 +60,7 @@ export const GeologyExplorer: React.FC<GeologyExplorerProps> = ({ theme }) => {
       id: 'funnels',
       name: 'Lead Automation Funnels',
       age: '1 - 3 Month Automation',
-      depth: '$1,000 - $3,000/mo',
+      depth: '₹25,000 - ₹75,000/mo',
       composition: 'Landing portals, CRM triggers, email sequences, SMS alerts',
       description: 'Formed in quiet valleys where user traffic is captured and refined. Lead funnels compress raw web visitors into qualified leads through automated email nurturing, form segmentation, and instant alerts.',
       fossil: 'CRM Integrations & Email Templates',
@@ -181,10 +181,10 @@ export const GeologyExplorer: React.FC<GeologyExplorerProps> = ({ theme }) => {
               className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer accent-[#e8702a]"
             />
             <div className="flex justify-between text-[10px] text-zinc-500 font-bold uppercase tracking-widest mt-3">
-              <span>Foundation ($2k)</span>
-              <span>Growth ($15k)</span>
-              <span>Expansion ($30k)</span>
-              <span>Dominance ($50k+)</span>
+              <span>Foundation (₹50k)</span>
+              <span>Growth (₹1.5L)</span>
+              <span>Expansion (₹3L)</span>
+              <span>Dominance (₹5L+)</span>
             </div>
           </div>
 
