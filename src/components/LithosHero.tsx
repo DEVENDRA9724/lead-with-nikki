@@ -50,7 +50,10 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
       lastMouseMoveTime.current = Date.now();
       const touch = e.touches[0];
       mouse.current = { x: touch.clientX, y: touch.clientY };
-      smooth.current = { x: touch.clientX, y: touch.clientY };
+      
+      if (smooth.current.x === -999) {
+        smooth.current = { x: touch.clientX, y: touch.clientY };
+      }
     };
 
     const handleTouchMove = (e: TouchEvent) => {
@@ -128,6 +131,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
         className="absolute inset-0 bg-center bg-cover bg-no-repeat z-10 hero-zoom"
         style={{
           backgroundImage: `url(${BG_IMAGE_1})`,
+          willChange: 'transform',
         }}
       />
 
@@ -194,16 +198,16 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
       </div>
 
       {/* 3. Heading (z-50) */}
-      <div className="absolute top-[14%] left-0 right-0 flex flex-col items-center text-center px-5 pointer-events-none select-none z-50">
+      <div className="absolute top-[20%] sm:top-[14%] left-0 right-0 flex flex-col items-center text-center px-5 pointer-events-none select-none z-50">
         <h1 className="text-white leading-[0.95]">
           <span
-            className="block font-playfair italic font-normal text-5xl sm:text-7xl md:text-8xl hero-anim hero-reveal"
+            className="block font-playfair italic font-normal text-4xl sm:text-7xl md:text-8xl hero-anim hero-reveal"
             style={{ letterSpacing: '-0.05em', animationDelay: '0.25s' }}
           >
             Campaigns hold
           </span>
           <span
-            className="block font-normal text-5xl sm:text-7xl md:text-8xl -mt-1 hero-anim hero-reveal"
+            className="block font-normal text-4xl sm:text-7xl md:text-8xl -mt-1 hero-anim hero-reveal"
             style={{ letterSpacing: '-0.08em', animationDelay: '0.42s' }}
           >
             tales of growth
