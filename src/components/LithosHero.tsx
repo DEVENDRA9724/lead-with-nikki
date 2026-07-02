@@ -13,8 +13,14 @@ const BG_IMAGE_2 =
 
 export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
   const [spotlightRadius, setSpotlightRadius] = useState(260);
-  const [isDemoMode, setIsDemoMode] = useState(false);
+  const [isDemoMode, setIsDemoMode] = useState(() => {
+    if (typeof window !== 'undefined') {
+      return window.innerWidth < 768;
+    }
+    return false;
+  });
   const [showControls, setShowControls] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
 
   // Mouse tracking refs
   const mouse = useRef({ x: -999, y: -999 });
@@ -27,18 +33,10 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
   const angleRef = useRef<number>(0);
 
   useEffect(() => {
-    // Check if the user is on mobile
-    const isMobile = window.innerWidth < 768;
-    if (isMobile) {
-      // Auto-enable demo mode on mobile so the user gets a cool animation
-      setIsDemoMode(true);
-    }
+    setIsTouchDevice('ontouchstart' in window || navigator.maxTouchPoints > 0);
 
     const handleMouseMove = (e: MouseEvent) => {
-      // Disable demo mode on desktop when mouse starts moving
-      if (!isMobile) {
-        setIsDemoMode(false);
-      }
+      setIsDemoMode(false);
       lastMouseMoveTime.current = Date.now();
       mouse.current = { x: e.clientX, y: e.clientY };
 
@@ -47,10 +45,16 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
       }
     };
 
+    const handleTouchStart = (e: TouchEvent) => {
+      setIsDemoMode(false);
+      lastMouseMoveTime.current = Date.now();
+      const touch = e.touches[0];
+      mouse.current = { x: touch.clientX, y: touch.clientY };
+      smooth.current = { x: touch.clientX, y: touch.clientY };
+    };
+
     const handleTouchMove = (e: TouchEvent) => {
-      if (!isMobile) {
-        setIsDemoMode(false);
-      }
+      setIsDemoMode(false);
       lastMouseMoveTime.current = Date.now();
       const touch = e.touches[0];
       mouse.current = { x: touch.clientX, y: touch.clientY };
@@ -61,15 +65,16 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
     };
 
     window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener('touchstart', handleTouchStart, { passive: true });
     window.addEventListener('touchmove', handleTouchMove, { passive: true });
 
     const tick = () => {
       const now = Date.now();
 
-      // If idle for more than 4 seconds on desktop, we can orbit
+      // If idle for more than 4 seconds, orbit
       const isIdle = now - lastMouseMoveTime.current > 4000;
 
-      if (isDemoMode || (isIdle && !isMobile)) {
+      if (isDemoMode || isIdle) {
         // Orbit spotlight in a circle at the center of the screen
         const centerX = window.innerWidth / 2;
         const centerY = window.innerHeight / 2;
@@ -86,7 +91,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
           smooth.current.y += (targetY - smooth.current.y) * 0.08;
         }
       } else {
-        // Standard mouse lerp
+        // Standard mouse/touch lerp
         if (smooth.current.x === -999) {
           if (mouse.current.x !== -999) {
             smooth.current = { x: mouse.current.x, y: mouse.current.y };
@@ -105,6 +110,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
 
     return () => {
       window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('touchstart', handleTouchStart);
       window.removeEventListener('touchmove', handleTouchMove);
       if (rafRef.current) {
         cancelAnimationFrame(rafRef.current);
@@ -137,7 +143,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
       <div className="absolute top-24 left-5 sm:left-10 z-50 flex flex-col gap-2">
         <button
           onClick={() => setShowControls(!showControls)}
-          className="bg-black/50 backdrop-blur-md border border-white/20 hover:border-white/40 text-white rounded-full p-2.5 flex items-center justify-center gap-2 hover:bg-black/75 transition-all text-xs font-semibold uppercase tracking-wider active:scale-95 shadow-lg pointer-events-auto"
+          className="bg-black/50 backdrop-blur-md border border-white/20 hover:border-white/40 text-white rounded-full p-2.5 flex items-center justify-center gap-2 hover:bg-black/75 transition-all text-xs font-semibold uppercase tracking-wider active:scale-95 shadow-lg pointer-events-auto cursor-pointer"
         >
           <Sliders className="w-4 h-4" />
           <span className="hidden sm:inline">Analysis HUD</span>
@@ -165,7 +171,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
               </span>
               <button
                 onClick={() => setIsDemoMode(!isDemoMode)}
-                className={`p-1.5 rounded-lg border transition-all ${
+                className={`p-1.5 rounded-lg border transition-all cursor-pointer ${
                   isDemoMode
                     ? 'bg-[#e8702a]/20 border-[#e8702a] text-[#e8702a]'
                     : 'bg-white/5 border-white/10 text-white hover:bg-white/10'
@@ -176,8 +182,12 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
             </div>
             <p className="text-[10px] text-white/40 leading-normal">
               {isDemoMode
-                ? 'Demo mode active. The spotlight is orbiting. Move mouse to release.'
-                : 'Move your cursor over the screen to peel back raw web traffic and reveal your brand\'s growth structures.'}
+                ? isTouchDevice 
+                  ? 'Auto-orbit active. Tap or drag the screen to manual control.' 
+                  : 'Demo mode active. The spotlight is orbiting. Move mouse to release.'
+                : isTouchDevice 
+                  ? 'Drag your finger over the screen to peel back raw web traffic and reveal your brand\'s growth structures.' 
+                  : 'Move your cursor over the screen to peel back raw web traffic and reveal your brand\'s growth structures.'}
             </p>
           </div>
         )}
@@ -222,7 +232,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
         </p>
         <button
           onClick={onStartDigging}
-          className="bg-[#e8702a] hover:bg-[#d2611f] text-white text-sm font-medium px-7 py-3 rounded-full transition-all hover:scale-[1.03] active:scale-95 hover:shadow-lg hover:shadow-[#e8702a]/30 pointer-events-auto flex items-center gap-2 group"
+          className="bg-[#e8702a] hover:bg-[#d2611f] text-white text-sm font-medium px-7 py-3 rounded-full transition-all hover:scale-[1.03] active:scale-95 hover:shadow-lg hover:shadow-[#e8702a]/30 pointer-events-auto flex items-center gap-2 group cursor-pointer"
         >
           <span>Examine Growth Strata</span>
           <Sparkles className="w-4 h-4 transition-transform group-hover:rotate-12" />
@@ -234,7 +244,7 @@ export const LithosHero: React.FC<LithosHeroProps> = ({ onStartDigging }) => {
         <div className="absolute inset-0 flex items-center justify-center pointer-events-none z-40">
           <div className="bg-black/50 backdrop-blur-md border border-white/20 rounded-full px-6 py-3 text-white text-sm flex items-center gap-3 animate-pulse">
             <div className="w-2 h-2 rounded-full bg-[#e8702a]"></div>
-            <span>Move cursor to analyze conversion layers</span>
+            <span>{isTouchDevice ? 'Drag finger to analyze conversion layers' : 'Move cursor to analyze conversion layers'}</span>
           </div>
         </div>
       )}
